@@ -8,7 +8,10 @@ export default function Header() {
 
   return (
     <nav className="site-nav" aria-label="Primary navigation">
-      <div className="nav-logo">V · ACTOR</div>
+      <div className="nav-logo">
+        <img src="/v-logo.svg" alt="" aria-hidden="true" />
+        <span>V · ACTOR</span>
+      </div>
 
       <ul className={`nav-menu ${menuOpen ? 'active' : ''}`}>
         <li><a href="#home" onClick={closeMenu}>Home</a></li>

@@ -321,11 +321,20 @@ button {
 
 .nav-logo {
   flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   color: var(--gold);
   font-family: 'Cinzel', serif;
   font-size: 0.86rem;
   letter-spacing: 3px;
   white-space: nowrap;
+}
+
+.nav-logo img {
+  width: 28px;
+  height: 28px;
+  display: block;
 }
 
 .nav-menu {
