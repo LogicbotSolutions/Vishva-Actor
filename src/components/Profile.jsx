@@ -24,7 +24,7 @@ function Profile() {
         <Link to="/" className="profile-back">Back to Site</Link>
         <header ref={headerRef} className={`profile-header ${headerInView ? 'in-view' : ''}`}>
           <div className="profile-portrait" aria-hidden="true">
-            <img src="/profileimg.webp" alt="" />
+            <img src="/profileimg.webp" alt="" loading="eager" fetchPriority="high" decoding="async" />
           </div>
           <div className="profile-hero-copy">
             <span className="profile-kicker">Actor Profile</span>
@@ -45,7 +45,7 @@ function Profile() {
                 ['Height', "5'6\""],
                 ['Weight', '50 kg'],
                 ['Complexion', 'Fair'],
-                ['Eye Colour', 'Black'],
+                ['Eye Colour', 'Brown'],
                 ['Hair Colour', 'Black'],
               ].map(([label, value]) => (
                 <div className="attribute-item glass" key={label}>

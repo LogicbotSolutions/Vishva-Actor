@@ -1,12 +1,13 @@
 import React, { useRef } from 'react';
 import useInView from '../hooks/useInView';
 
+const emailContact = {
+  label: 'Casting & Bookings',
+  value: 'contactactorvishva@gmail.com',
+  href: 'mailto:contactactorvishva@gmail.com?subject=Casting%20Enquiry%20for%20Vishva',
+};
+
 const contactCards = [
-  {
-    label: 'Casting & Bookings',
-    value: 'contactactorvishva@gmail.com',
-    href: 'mailto:contactactorvishva@gmail.com?subject=Casting%20Enquiry%20for%20Vishva',
-  },
   {
     label: 'Instagram',
     value: '@vishva_actor',
@@ -19,14 +20,18 @@ const contactCards = [
   },
 ];
 
-const quickFacts = ['Based in Chennai', 'Tamil · English · Telugu', 'Film · Series · Theatre'];
+const quickFacts = ['Based in Chennai', 'Tamil / English / Telugu', 'Film / Series / Theatre'];
 
 function Contact() {
   const contactRef = useRef(null);
   const inView = useInView(contactRef);
 
   return (
-    <section id="contact" ref={contactRef} className={`contact scene-section ${inView ? 'is-visible in-view' : ''}`}>
+    <section
+      id="contact"
+      ref={contactRef}
+      className={`contact scene-section ${inView ? 'is-visible in-view' : ''}`}
+    >
       <div className="contact-shell">
         <div className="contact-kicker fade-up">For casting, collaborations, and stage enquiries</div>
 
@@ -34,8 +39,8 @@ function Contact() {
           <div className={`contact-copy fade-left ${inView ? 'in-view' : ''}`}>
             <h2>Get In Touch</h2>
             <p>
-              For roles, auditions, interviews, and professional collaborations, reach out with
-              project details, shoot dates, language, and location.
+              For casting, auditions, interviews, and professional collaborations, email the
+              project brief directly.
             </p>
             <div className="contact-facts">
               {quickFacts.map((fact) => (
@@ -45,13 +50,22 @@ function Contact() {
           </div>
 
           <div className="contact-panel">
+            <a
+              href={emailContact.href}
+              className={`contact-card contact-card-primary fade-up ${inView ? 'in-view' : ''}`}
+            >
+              <span>{emailContact.label}</span>
+              <strong>{emailContact.value}</strong>
+              <em>Email for casting enquiry</em>
+            </a>
+
             {contactCards.map((item, index) => (
               <a
                 href={item.href}
                 target={item.href.startsWith('http') ? '_blank' : undefined}
                 rel={item.href.startsWith('http') ? 'noreferrer' : undefined}
                 className={`contact-card fade-up ${inView ? 'in-view' : ''}`}
-                style={{ transitionDelay: `${index * 0.14}s` }}
+                style={{ transitionDelay: `${(index + 1) * 0.14}s` }}
                 key={item.label}
               >
                 <span>{item.label}</span>
@@ -62,7 +76,7 @@ function Contact() {
         </div>
 
         <p className={`contact-note fade-in ${inView ? 'in-view' : ''}`}>
-          Please include a short brief and contact number for faster response.
+          Email should include role, shoot dates, location, language, and contact number.
         </p>
       </div>
     </section>

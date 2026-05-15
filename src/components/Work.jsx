@@ -37,7 +37,7 @@ function FilmCard({ item, index }) {
     <article
       ref={ref}
       className={`work-card fade-up ${inView ? 'in-view' : ''}`}
-      style={{ transitionDelay: `${index * 0.2}s` }}
+      style={{ transitionDelay: `${index * 0.2}s`, '--work-index': String(index + 1).padStart(2, '0') }}
     >
       <div className="work-thumbnail">
         <iframe
@@ -49,6 +49,7 @@ function FilmCard({ item, index }) {
         ></iframe>
       </div>
       <div className="work-info">
+        <span className="work-kicker">Featured Credit</span>
         <h3 className="work-title">{item.title}</h3>
         <p className="work-role">{item.role}</p>
         <p className="work-description">{item.description}</p>
@@ -68,7 +69,10 @@ function Work() {
     <section id="work" className="screening-room scene-section">
       <div ref={headingRef} className={`work-heading fade-up ${headingInView ? 'in-view' : ''}`}>
         <span></span>
-        <h2>The Screening Room</h2>
+        <div>
+          <small>Selected Screen Work</small>
+          <h2>The Screening Room</h2>
+        </div>
         <span></span>
       </div>
 

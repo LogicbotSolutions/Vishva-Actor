@@ -2,9 +2,23 @@ import React, { useEffect, useRef, useState } from 'react';
 import useInView from '../hooks/useInView';
 
 const imagePath = (name) => `/image/${name}`;
+const imageBase = (name) => name.replace(/\.[^.]+$/, '');
+const optimizedImage = (name, width = 800) => `/image/optimized/${imageBase(name)}-${width}.jpg`;
+const optimizedSrcSet = (name) => [480, 800, 1200, 1600]
+  .map((width) => `${optimizedImage(name, width)} ${width}w`)
+  .join(', ');
 const remoteImage = (name) => `https://raw.githubusercontent.com/LogicbotSolutions/Vishva-Actor/main/image/${encodeURIComponent(name)}`;
 const imageFallback = (event, name) => {
+  const original = imagePath(name);
   const fallback = remoteImage(name);
+  event.currentTarget.removeAttribute('srcset');
+
+  if (!event.currentTarget.dataset.originalTried) {
+    event.currentTarget.dataset.originalTried = 'true';
+    event.currentTarget.src = original;
+    return;
+  }
+
   if (event.currentTarget.src !== fallback) {
     event.currentTarget.src = fallback;
   }
@@ -13,16 +27,16 @@ const imageFallback = (event, name) => {
 const theaterPhotosLink = 'https://photos.app.goo.gl/gB4iqivnTUSbvnYW8';
 
 const portfolioSlides = [
-  { src: imagePath('Vp2.jpeg'), alt: 'Vishva featured look one' },
-  { src: imagePath('DSC_Vp2.jpeg'), alt: 'Vishva featured look two' },
-  { src: imagePath('vishvaport.jpg'), alt: 'Vishva featured look three' },
+  { name: 'Vp2.jpeg', alt: 'Vishva featured look one' },
+  { name: 'DSC_Vp2.jpeg', alt: 'Vishva featured look two' },
+  { name: 'vishvaport.jpg', alt: 'Vishva featured look three' },
 ];
 
 const galleryImages = [
-  { src: imagePath('DSC_V3.jpeg'), alt: 'Vishva portrait in cinematic profile' },
-  { src: imagePath('DSC_V1.jpeg'), alt: 'Vishva editorial portrait' },
-  { src: imagePath('v4.jpg'), alt: 'Vishva film still portrait' },
-  { src: imagePath('DSC_V2.jpeg'), alt: 'Vishva studio portrait' },
+  { name: 'DSC_V3.jpeg', alt: 'Vishva portrait in cinematic profile' },
+  { name: 'DSC_V1.jpeg', alt: 'Vishva editorial portrait' },
+  { name: 'v4.jpg', alt: 'Vishva film still portrait' },
+  { name: 'DSC_V2.jpeg', alt: 'Vishva studio portrait' },
 ];
 
 const navarasaFaces = [
@@ -167,7 +181,7 @@ function Home() {
           <div className="mobile-film-roll" aria-hidden="true">
             <div className="mobile-film-track">
               {navarasaFaces.map((name) => (
-                <img key={`roll-${name}`} src={`/${name}`} alt="" decoding="async" />
+                <img key={`roll-${name}`} src={`/${name}`} alt="" loading="lazy" decoding="async" />
               ))}
             </div>
           </div>
@@ -177,6 +191,8 @@ function Home() {
               key={navarasaFaces[emotionIndex]}
               src={`/${navarasaFaces[emotionIndex]}`}
               alt={`Vishva emotion ${emotionIndex + 1}`}
+              loading="eager"
+              fetchPriority="high"
               decoding="async"
             />
             <div className="emotion-controls" aria-label="Emotion slides">
@@ -210,7 +226,11 @@ function Home() {
         </div>
       </section>
 
-      <section className="gallery scene-section" id="gallery">
+      <section
+        className="gallery scene-section"
+        id="gallery"
+        style={{ '--section-art': "url('/image/optimized/DSC_V3-1200.jpg')" }}
+      >
         <div ref={galleryHeadingRef} className={`gallery-heading fade-up ${galleryHeadingInView ? 'in-view' : ''}`}>
           <span className="section-kicker">Selected Stills</span>
           <h2>Portfolio</h2>
@@ -219,27 +239,36 @@ function Home() {
         <div className="gallery-grid">
           {galleryImages.map((image, index) => (
             <figure
-              key={image.src}
+              key={image.name}
               ref={galleryRefs[index]}
               className={`gallery-item scale-in ${galleryInView[index] ? 'in-view' : ''}`}
+              style={{ '--frame': String(index + 1).padStart(2, '0') }}
             >
               <img
-                src={image.src}
+                src={optimizedImage(image.name, 800)}
+                srcSet={optimizedSrcSet(image.name)}
+                sizes="(max-width: 700px) 47vw, (max-width: 1100px) 23vw, 330px"
                 alt={image.alt}
                 loading="lazy"
                 decoding="async"
-                onError={(event) => imageFallback(event, image.src.replace('/image/', ''))}
+                onError={(event) => imageFallback(event, image.name)}
               />
             </figure>
           ))}
         </div>
       </section>
 
-      <section className="story scene-section" id="story">
+      <section
+        className="story scene-section"
+        id="story"
+        style={{ '--section-art': "url('/image/optimized/DSC_Vp2-1200.jpg')" }}
+      >
         <div className="story-container">
           <figure ref={storyImageRef} className={`story-image fade-left ${storyImageInView ? 'in-view' : ''}`}>
             <img
-              src={imagePath('DSC_Vp2.jpeg')}
+              src={optimizedImage('DSC_Vp2.jpeg', 800)}
+              srcSet={optimizedSrcSet('DSC_Vp2.jpeg')}
+              sizes="(max-width: 760px) 92vw, 520px"
               alt="Vishva in a refined portrait"
               loading="lazy"
               decoding="async"
@@ -266,8 +295,12 @@ function Home() {
         </div>
       </section>
 
-      <section className="featured-looks scene-section">
+      <section
+        className="featured-looks scene-section"
+        style={{ '--section-art': "url('/image/optimized/Vp2-1200.jpg')" }}
+      >
         <div ref={featuredHeadingRef} className={`featured-heading fade-up ${featuredHeadingInView ? 'in-view' : ''}`}>
+          <span className="section-kicker">Lookbook</span>
           <h2>Featured Looks</h2>
         </div>
         <div
@@ -279,7 +312,11 @@ function Home() {
           <button className="slider-arrow slider-arrow-prev" type="button" onClick={() => moveSlide(-1)} aria-label="Previous look">
             ‹
           </button>
-          <div className="slider-frame">
+          <div className="slider-stage">
+            <div className="look-meta look-meta-minimal" aria-live="polite">
+              <span>{String(portfolioIndex + 1).padStart(2, '0')} / {String(totalSlides).padStart(2, '0')}</span>
+            </div>
+            <div className="slider-frame">
             {isTheaterSlide ? (
               <a href={theaterPhotosLink} target="_blank" rel="noreferrer" className="theater-slide google-photos-slide">
                 <div className="google-photos-mark" aria-hidden="true">
@@ -296,13 +333,16 @@ function Home() {
               <img
                 key={portfolioIndex}
                 className="slider-image"
-                src={portfolioSlides[portfolioIndex].src}
+                src={optimizedImage(portfolioSlides[portfolioIndex].name, 800)}
+                srcSet={optimizedSrcSet(portfolioSlides[portfolioIndex].name)}
+                sizes="(max-width: 700px) 92vw, 600px"
                 alt={portfolioSlides[portfolioIndex].alt}
                 loading="lazy"
                 decoding="async"
-                onError={(event) => imageFallback(event, portfolioSlides[portfolioIndex].src.replace('/image/', ''))}
+                onError={(event) => imageFallback(event, portfolioSlides[portfolioIndex].name)}
               />
             )}
+            </div>
           </div>
           <button className="slider-arrow slider-arrow-next" type="button" onClick={() => moveSlide(1)} aria-label="Next look">
             ›

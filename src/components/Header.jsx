@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,7 +18,7 @@ export default function Header() {
         <li><a href="#story" onClick={closeMenu}>Story</a></li>
         <li><a href="#theater" onClick={closeMenu}>Theater</a></li>
         <li><a href="#work" onClick={closeMenu}>Work</a></li>
-        <li><Link to="/profile" onClick={closeMenu}>Profile</Link></li>
+        <li><a href="#profile-preview" onClick={closeMenu}>Profile</a></li>
         <li><a href="#contact" onClick={closeMenu}>Contact</a></li>
       </ul>
 

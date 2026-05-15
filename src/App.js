@@ -5,6 +5,7 @@ import Home from './components/Home';
 import LogoSection from './components/LogoSection';
 import TheaterPlays from './components/TheaterPlays';
 import Work from './components/Work';
+import ProfilePreview from './components/ProfilePreview';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
@@ -19,6 +20,7 @@ function App() {
       ['story', 'My Story'],
       ['theater', 'Theater Plays'],
       ['work', 'Screening Room'],
+      ['profile-preview', 'Actor Profile'],
       ['contact', 'Contact'],
     ];
 
@@ -63,6 +65,7 @@ function App() {
       <LogoSection />
       <TheaterPlays />
       <Work />
+      <ProfilePreview />
       <Contact />
       <Footer />
     </div>
