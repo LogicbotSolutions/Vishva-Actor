@@ -2510,28 +2510,7 @@ footer.in-view .footer-text {
   }
 
   .scroll-director {
-    right: 8px;
-    grid-template-rows: 118px auto;
-    gap: 10px;
-  }
-
-  .director-label {
     display: none;
-  }
-
-  .director-rail {
-    height: 118px;
-  }
-
-  .director-reel {
-    width: 22px;
-    height: 22px;
-  }
-
-  .director-scene {
-    max-height: 108px;
-    font-size: 0.54rem;
-    letter-spacing: 2px;
   }
 
   .scene-section {
